@@ -563,8 +563,8 @@ header {
 }
 
 .modal-buttons {
-    display: flex;
-    flex-direction: column;
+    display: flex !important;
+    flex-direction: column !important;
     gap: 10px;
     justify-content: center;
     margin-top: 20px;
@@ -582,7 +582,8 @@ header {
     transition: all 0.3s ease;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     white-space: nowrap;
-    width: 100%;
+    width: 100% !important;
+    min-width: 0;
 }
 
 .btn:hover {
