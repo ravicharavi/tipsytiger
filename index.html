@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tipsy Tiger 🐅</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 class="title">tipsy tiger 🐅</h1>
+            <div id="nameSection" class="name-section">
+                <input type="text" id="nameInput" placeholder="What's your name?" class="name-input">
+                <button class="btn btn-save" id="saveName">Go</button>
+            </div>
+            <div id="welcomeMessage" class="welcome-message" style="display: none;"></div>
+        </header>
+
+        <div class="calendar-container">
+            <div class="view-filters">
+                <button class="view-btn active" id="viewMonth">Month</button>
+                <button class="view-btn" id="viewYear">Year</button>
+                <button class="view-btn" id="viewRange">Date Range</button>
+                <button class="view-btn" id="viewAnalytics">Analytics</button>
+            </div>
+            
+            <div class="calendar-header" id="calendarHeader">
+                <button class="nav-btn" id="prevMonth">←</button>
+                <h2 id="currentMonth"></h2>
+                <button class="nav-btn" id="nextMonth">→</button>
+            </div>
+            
+            <div class="date-range-selector" id="dateRangeSelector" style="display: none;">
+                <div class="range-inputs">
+                    <div>
+                        <label>Start Date:</label>
+                        <input type="date" id="startDate" class="date-input">
+                    </div>
+                    <div>
+                        <label>End Date:</label>
+                        <input type="date" id="endDate" class="date-input">
+                    </div>
+                    <button class="btn btn-save" id="applyRange">Apply</button>
+                </div>
+            </div>
+            
+            <div class="calendar-grid" id="calendarGrid"></div>
+        </div>
+    </div>
+
+    <footer>
+        <p>vibe coded by <span class="footer-name">@ravicharavi</span></p>
+    </footer>
+
+    <!-- Modal for sober/nah question -->
+    <div class="modal" id="soberModal">
+        <div class="modal-content">
+            <h3>Sober or nah? 🐅</h3>
+            <div class="modal-buttons">
+                <button class="btn btn-yes" id="soberYes">Yes ✨</button>
+                <button class="btn btn-no" id="soberNo">Nah 🍷</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for glasses/shots input -->
+    <div class="modal" id="drinksModal">
+        <div class="modal-content">
+            <h3>How many glasses/shots? 🍷</h3>
+            <input type="number" id="drinksInput" min="1" placeholder="Enter number" class="drinks-input">
+            <input type="text" id="occasionInput" placeholder="Optional: What was the occasion? (e.g., Birthday party, Friday night)" class="occasion-input">
+            <div class="modal-buttons">
+                <button class="btn btn-save" id="saveDrinks">Save</button>
+                <button class="btn btn-cancel" id="cancelDrinks">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
