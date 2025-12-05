@@ -519,6 +519,13 @@ footer {
     font-weight: 600;
 }
 
+.deployment-info {
+    margin-top: 10px;
+    font-size: 0.8em;
+    color: rgba(255, 107, 53, 0.5);
+    font-weight: 400;
+}
+
 /* Year view styles */
 .year-grid {
     display: grid;

@@ -639,8 +639,28 @@ function showWelcomeMessage() {
     }
 }
 
+// Get deployment info
+function updateDeploymentInfo() {
+    const deploymentInfo = document.getElementById('deploymentInfo');
+    if (deploymentInfo) {
+        const now = new Date();
+        const dateStr = now.toLocaleDateString('en-US', { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+        });
+        const timeStr = now.toLocaleTimeString('en-US', { 
+            hour: '2-digit', 
+            minute: '2-digit',
+            second: '2-digit'
+        });
+        deploymentInfo.textContent = `Last updated: ${dateStr} at ${timeStr}`;
+    }
+}
+
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
+    updateDeploymentInfo();
     // Name input handler
     document.getElementById('saveName').addEventListener('click', () => {
         const nameInput = document.getElementById('nameInput');
