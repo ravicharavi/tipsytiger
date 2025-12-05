@@ -640,16 +640,19 @@ function showWelcomeMessage() {
 }
 
 // Get deployment info
+// This timestamp should be updated on each deployment
+// Format: YYYY-MM-DDTHH:MM:SS (use the time of your most recent deployment)
+const DEPLOYMENT_TIMESTAMP = new Date('2025-12-05T18:14:49-05:00'); // Last commit: 2025-12-05 18:14:49 -0500
+
 function updateDeploymentInfo() {
     const deploymentInfo = document.getElementById('deploymentInfo');
     if (deploymentInfo) {
-        const now = new Date();
-        const dateStr = now.toLocaleDateString('en-US', { 
+        const dateStr = DEPLOYMENT_TIMESTAMP.toLocaleDateString('en-US', { 
             year: 'numeric', 
             month: 'long', 
             day: 'numeric' 
         });
-        const timeStr = now.toLocaleTimeString('en-US', { 
+        const timeStr = DEPLOYMENT_TIMESTAMP.toLocaleTimeString('en-US', { 
             hour: '2-digit', 
             minute: '2-digit',
             second: '2-digit'
