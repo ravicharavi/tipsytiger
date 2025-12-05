@@ -862,6 +862,12 @@ document.addEventListener('DOMContentLoaded', () => {
             closeModal('authModal');
         });
         
+        // Also allow clicking the cancel link
+        const cancelLink = document.getElementById('closeAuthBtn');
+        if (cancelLink) {
+            cancelLink.style.cursor = 'pointer';
+        }
+        
         // Close modal when clicking outside
         document.getElementById('authModal').addEventListener('click', (e) => {
             if (e.target.id === 'authModal') {
