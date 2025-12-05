@@ -1,12 +1,3 @@
-// Supabase setup
-const SUPABASE_URL = 'https://nzdvgphyrkuswqcvfenn.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im56ZHZncGh5cmt1c3dxY3ZlZm5uIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ5Mzk3MjUsImV4cCI6MjA4MDUxNTcyNX0.t0NyeVJTtjPk7R1eU74W6ulU9_qyrlZWCx-keXkHDoU';
-
-let supabase = null;
-if (typeof window !== 'undefined' && window.supabase) {
-    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-}
-
 // Calendar state
 let currentDate = new Date();
 let trackingData = {};
@@ -14,199 +5,28 @@ let currentView = 'month'; // 'month', 'year', 'range', 'analytics'
 let rangeStart = null;
 let rangeEnd = null;
 let userName = '';
-let currentUser = null;
 
-// Load saved data from Supabase or localStorage
-async function loadData() {
-    if (currentUser && supabase) {
-        // Load from Supabase
-        try {
-            const { data, error } = await supabase
-                .from('tracking_entries')
-                .select('*')
-                .eq('user_id', currentUser.id)
-                .order('date', { ascending: true });
-            
-            if (error) {
-                console.error('Error loading data:', error);
-                // Fallback to localStorage
-                loadFromLocalStorage();
-            } else {
-                // Convert Supabase data to trackingData format
-                trackingData = {};
-                data.forEach(entry => {
-                    const dateKey = entry.date;
-                    trackingData[dateKey] = {
-                        sober: entry.sober,
-                        drinks: entry.drinks,
-                        occasion: entry.occasion
-                    };
-                });
-            }
-        } catch (err) {
-            console.error('Error:', err);
-            loadFromLocalStorage();
-        }
-    } else {
-        // Fallback to localStorage
-        loadFromLocalStorage();
+// Load saved data from localStorage
+function loadData() {
+    const saved = localStorage.getItem('tipsyTigerData');
+    if (saved) {
+        trackingData = JSON.parse(saved);
     }
     
     const savedName = localStorage.getItem('tipsyTigerName');
     if (savedName) {
         userName = savedName;
-    }
-}
-
-function loadFromLocalStorage() {
-    const saved = localStorage.getItem('tipsyTigerData');
-    if (saved) {
-        trackingData = JSON.parse(saved);
-    }
-}
-
-// Save data to Supabase or localStorage
-async function saveData() {
-    if (currentUser && supabase) {
-        // Save to Supabase
-        try {
-            // Get all entries to sync
-            const entries = Object.keys(trackingData).map(dateKey => ({
-                user_id: currentUser.id,
-                date: dateKey,
-                sober: trackingData[dateKey].sober,
-                drinks: trackingData[dateKey].drinks || null,
-                occasion: trackingData[dateKey].occasion || null
-            }));
-            
-            // Upsert all entries
-            const { error } = await supabase
-                .from('tracking_entries')
-                .upsert(entries, { onConflict: 'user_id,date' });
-            
-            if (error) {
-                console.error('Error saving data:', error);
-                // Fallback to localStorage
-                localStorage.setItem('tipsyTigerData', JSON.stringify(trackingData));
-            }
-        } catch (err) {
-            console.error('Error:', err);
-            localStorage.setItem('tipsyTigerData', JSON.stringify(trackingData));
-        }
-    } else {
-        // Fallback to localStorage
-        localStorage.setItem('tipsyTigerData', JSON.stringify(trackingData));
-    }
-}
-
-// Save individual entry
-async function saveEntry(dateKey, data) {
-    trackingData[dateKey] = data;
-    
-    if (currentUser && supabase) {
-        try {
-            const { error } = await supabase
-                .from('tracking_entries')
-                .upsert({
-                    user_id: currentUser.id,
-                    date: dateKey,
-                    sober: data.sober,
-                    drinks: data.drinks || null,
-                    occasion: data.occasion || null
-                }, { onConflict: 'user_id,date' });
-            
-            if (error) {
-                console.error('Error saving entry:', error);
-                localStorage.setItem('tipsyTigerData', JSON.stringify(trackingData));
-            }
-        } catch (err) {
-            console.error('Error:', err);
-            localStorage.setItem('tipsyTigerData', JSON.stringify(trackingData));
-        }
-    } else {
-        localStorage.setItem('tipsyTigerData', JSON.stringify(trackingData));
-    }
-}
-
-// Check authentication status (optional)
-async function checkAuth() {
-    if (supabase) {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (session) {
-            currentUser = session.user;
-            await loadData();
-            showUserInfo();
-            
-            // Sync localStorage data if user just signed in via OAuth
-            const localData = localStorage.getItem('tipsyTigerData');
-            if (localData) {
-                const localTrackingData = JSON.parse(localData);
-                if (Object.keys(localTrackingData).length > 0) {
-                    // Merge local data with Supabase data
-                    Object.keys(localTrackingData).forEach(dateKey => {
-                        if (!trackingData[dateKey]) {
-                            trackingData[dateKey] = localTrackingData[dateKey];
-                        }
-                    });
-                    // Save merged data to Supabase
-                    await saveData();
-                }
-            }
-        }
-        
-        // Listen for auth changes
-        supabase.auth.onAuthStateChange((_event, session) => {
-            if (session) {
-                currentUser = session.user;
-                loadData().then(async () => {
-                    showUserInfo();
-                    renderCalendar();
-                    
-                    // Sync localStorage data on OAuth sign in
-                    const localData = localStorage.getItem('tipsyTigerData');
-                    if (localData) {
-                        const localTrackingData = JSON.parse(localData);
-                        if (Object.keys(localTrackingData).length > 0) {
-                            Object.keys(localTrackingData).forEach(dateKey => {
-                                if (!trackingData[dateKey]) {
-                                    trackingData[dateKey] = localTrackingData[dateKey];
-                                }
-                            });
-                            await saveData();
-                        }
-                    }
-                });
-            } else {
-                currentUser = null;
-                // Don't clear data, just update UI
-                document.getElementById('userInfo').style.display = 'none';
-                document.getElementById('authToggleBtn').style.display = 'block';
-            }
-        });
-    }
-    
-    // Always load data and show name section
-    loadData();
-    if (userName) {
         showWelcomeMessage();
     }
 }
 
-function showUserInfo() {
-    if (currentUser) {
-        document.getElementById('userEmail').textContent = currentUser.email;
-        document.getElementById('userInfo').style.display = 'flex';
-        document.getElementById('authToggleBtn').style.display = 'none';
-        // Use email username if no name set
-        if (!userName) {
-            userName = currentUser.email.split('@')[0];
-            showWelcomeMessage();
-        }
-    }
+// Save data to localStorage
+function saveData() {
+    localStorage.setItem('tipsyTigerData', JSON.stringify(trackingData));
 }
 
-// Initialize auth check (non-blocking)
-checkAuth();
+// Initialize
+loadData();
 
 // Get month and year string
 function getMonthYearString(date) {
@@ -1109,9 +929,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Sober modal buttons
-    document.getElementById('soberYes').addEventListener('click', async () => {
-        const data = { sober: true };
-        await saveEntry(selectedDateKey, data);
+    document.getElementById('soberYes').addEventListener('click', () => {
+        trackingData[selectedDateKey] = { sober: true };
+        saveData();
         updateDayElement(selectedDayElement, selectedDateKey);
         closeModal('soberModal');
     });
@@ -1132,7 +952,7 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.classList.add('show');
     }
 
-    document.getElementById('saveDrinks').addEventListener('click', async () => {
+    document.getElementById('saveDrinks').addEventListener('click', () => {
         const input = document.getElementById('drinksInput');
         const occasionInput = document.getElementById('occasionInput');
         const drinks = parseInt(input.value);
@@ -1143,7 +963,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (occasion) {
                 data.occasion = occasion;
             }
-            await saveEntry(selectedDateKey, data);
+            trackingData[selectedDateKey] = data;
+            saveData();
             updateDayElement(selectedDayElement, selectedDateKey);
             closeModal('drinksModal');
         } else {

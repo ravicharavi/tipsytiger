@@ -5,19 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tipsy Tiger 🐅</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
     <div class="container">
         <header>
-            <div class="auth-header">
-                <button class="auth-toggle-btn" id="authToggleBtn">🔐 Sign In / Sign Up</button>
-                <div id="userInfo" class="user-info" style="display: none;">
-                    <span>Logged in as <strong id="userEmail"></strong></span>
-                    <button class="btn btn-cancel btn-small" id="signOutBtn">Sign Out</button>
-                </div>
-            </div>
-            
             <h1 class="title">tipsy tiger 🐅</h1>
             <div id="nameSection" class="name-section">
                 <input type="text" id="nameInput" placeholder="What's your name?" class="name-input">
@@ -26,25 +17,6 @@
             <div id="welcomeMessage" class="welcome-message" style="display: none;"></div>
         </header>
         
-        <!-- Auth Modal -->
-        <div class="modal" id="authModal">
-            <div class="modal-content">
-                <h3>Sign In / Sign Up</h3>
-                
-                <!-- SSO Options -->
-                <div class="sso-section">
-                    <p class="sso-label">Sign in with:</p>
-                    <div class="sso-buttons">
-                        <button class="btn btn-sso btn-google" id="googleSignIn">
-                            <span>🔵</span> Sign in with Google
-                        </button>
-                    </div>
-                </div>
-                <p class="cancel-link" id="closeAuthBtn">Cancel</p>
-                <p id="authError" class="auth-error"></p>
-            </div>
-        </div>
-
         <div class="calendar-container">
             <div class="view-filters">
                 <button class="view-btn active" id="viewMonth">Month</button>
