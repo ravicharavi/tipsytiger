@@ -612,9 +612,48 @@ header {
     color: white;
 }
 
+.btn-signin {
+    background: linear-gradient(135deg, #fed7aa 0%, #fdba74 100%);
+    color: #9a3412;
+    border: 2px solid #fb923c;
+}
+
+.btn-signin:hover {
+    background: linear-gradient(135deg, #fdba74 0%, #fb923c 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(251, 146, 60, 0.3);
+}
+
+.btn-signup {
+    background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+    color: #065f46;
+    border: 2px solid #34d399;
+}
+
+.btn-signup:hover {
+    background: linear-gradient(135deg, #a7f3d0 0%, #6ee7b7 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(52, 211, 153, 0.3);
+}
+
 .btn-cancel {
     background: #e5e7eb;
     color: #374151;
+}
+
+.cancel-link {
+    text-align: center;
+    margin-top: 15px;
+    color: #FF6B35;
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 0.95em;
+    transition: all 0.2s ease;
+}
+
+.cancel-link:hover {
+    color: #FF8C42;
+    text-decoration-thickness: 2px;
 }
 
 .drinks-input {
