@@ -1002,21 +1002,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
         
-        document.getElementById('githubSignIn').addEventListener('click', async () => {
-            const errorEl = document.getElementById('authError');
-            errorEl.textContent = 'Redirecting to GitHub...';
-            
-            const { data, error } = await supabase.auth.signInWithOAuth({
-                provider: 'github',
-                options: {
-                    redirectTo: window.location.origin + window.location.pathname
-                }
-            });
-            
-            if (error) {
-                errorEl.textContent = error.message;
-            }
-        });
     }
     
     // Name input handler
