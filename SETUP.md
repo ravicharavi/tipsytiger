@@ -55,6 +55,28 @@ This will create:
 2. Settings → Authentication
 3. Disable "Enable email confirmations"
 
+### Enable SSO (Google/GitHub Login)
+
+To enable Google or GitHub login:
+
+#### Google OAuth:
+1. Go to Supabase Dashboard → Settings → Authentication → Providers
+2. Enable "Google"
+3. You'll need to:
+   - Create a Google OAuth app at https://console.cloud.google.com/apis/credentials
+   - Add your Supabase redirect URL: `https://nzdvgphyrkuswqcvfenn.supabase.co/auth/v1/callback`
+   - Copy Client ID and Client Secret to Supabase
+
+#### GitHub OAuth:
+1. Go to Supabase Dashboard → Settings → Authentication → Providers
+2. Enable "GitHub"
+3. You'll need to:
+   - Create a GitHub OAuth app at https://github.com/settings/developers
+   - Add your Supabase redirect URL: `https://nzdvgphyrkuswqcvfenn.supabase.co/auth/v1/callback`
+   - Copy Client ID and Client Secret to Supabase
+
+Once configured, users can sign in with one click using Google or GitHub!
+
 ## That's it! 🎉
 
 Your app is now connected to Supabase and ready to use!
