@@ -2,7 +2,10 @@
 const SUPABASE_URL = 'https://nzdvgphyrkuswqcvfenn.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im56ZHZncGh5cmt1c3dxY3ZlZm5uIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ5Mzk3MjUsImV4cCI6MjA4MDUxNTcyNX0.t0NyeVJTtjPk7R1eU74W6ulU9_qyrlZWCx-keXkHDoU';
 
-const supabase = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+let supabase = null;
+if (typeof window !== 'undefined' && window.supabase) {
+    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+}
 
 // Calendar state
 let currentDate = new Date();
