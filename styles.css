@@ -349,6 +349,10 @@ header {
     background: white;
     color: #4285F4;
     border-color: #4285F4;
+    white-space: normal;
+    word-wrap: break-word;
+    text-align: center;
+    line-height: 1.4;
 }
 
 .btn-google:hover {
