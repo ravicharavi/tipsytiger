@@ -100,6 +100,77 @@ header {
     font-weight: 600;
 }
 
+/* Auth section styles */
+.auth-section {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.auth-container {
+    background: rgba(255, 107, 53, 0.05);
+    border-radius: 16px;
+    padding: 30px;
+    border: 1px solid rgba(255, 107, 53, 0.1);
+    max-width: 400px;
+    width: 100%;
+}
+
+.auth-container h3 {
+    color: #FF6B35;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 1.5em;
+}
+
+.auth-input {
+    width: 100%;
+    padding: 12px 15px;
+    font-size: 1em;
+    border: 2px solid rgba(255, 107, 53, 0.2);
+    border-radius: 12px;
+    font-family: inherit;
+    font-weight: 500;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.auth-input:focus {
+    outline: none;
+    border-color: #FF6B35;
+    box-shadow: 0 0 0 4px rgba(255, 107, 53, 0.1);
+    background: white;
+}
+
+.auth-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.auth-error {
+    color: #ef4444;
+    font-size: 0.9em;
+    text-align: center;
+    margin-top: 10px;
+    min-height: 20px;
+}
+
+.user-section {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.user-section p {
+    color: #374151;
+    margin-bottom: 10px;
+}
+
+.user-section strong {
+    color: #FF6B35;
+}
+
 .title {
     font-size: 3.5em;
     font-weight: 700;

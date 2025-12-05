@@ -5,16 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tipsy Tiger 🐅</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
     <div class="container">
         <header>
             <h1 class="title">tipsy tiger 🐅</h1>
-            <div id="nameSection" class="name-section">
+            <div id="authSection" class="auth-section" style="display: none;">
+                <div class="auth-container">
+                    <h3>Sign In / Sign Up</h3>
+                    <input type="email" id="emailInput" placeholder="Email" class="auth-input">
+                    <input type="password" id="passwordInput" placeholder="Password" class="auth-input">
+                    <div class="auth-buttons">
+                        <button class="btn btn-save" id="signInBtn">Sign In</button>
+                        <button class="btn btn-no" id="signUpBtn">Sign Up</button>
+                    </div>
+                    <p id="authError" class="auth-error"></p>
+                </div>
+            </div>
+            <div id="nameSection" class="name-section" style="display: none;">
                 <input type="text" id="nameInput" placeholder="What's your name?" class="name-input">
                 <button class="btn btn-save" id="saveName">Go</button>
             </div>
             <div id="welcomeMessage" class="welcome-message" style="display: none;"></div>
+            <div id="userSection" class="user-section" style="display: none;">
+                <p>Logged in as <strong id="userEmail"></strong></p>
+                <button class="btn btn-cancel" id="signOutBtn">Sign Out</button>
+            </div>
         </header>
 
         <div class="calendar-container">

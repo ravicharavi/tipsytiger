@@ -34,8 +34,19 @@ A fun and colorful web app to help you track your personal health goals. Track a
 ## Tech Stack
 
 - Pure HTML, CSS, and JavaScript
-- No dependencies required
-- LocalStorage for data persistence
+- Supabase for authentication and database
+- LocalStorage fallback for offline use
+
+## Setup
+
+1. Clone the repository
+2. Open `index.html` in your browser
+3. Sign up or sign in with your email
+4. Start tracking!
+
+### Database Setup
+
+Run the SQL in `supabase-setup.sql` in your Supabase SQL Editor to create the necessary tables and policies.
 
 ## Live Demo
 
