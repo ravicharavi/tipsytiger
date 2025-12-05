@@ -542,6 +542,7 @@ header {
     animation: slideUp 0.3s;
     position: relative;
     backdrop-filter: blur(10px);
+    box-sizing: border-box;
 }
 
 @keyframes slideUp {
