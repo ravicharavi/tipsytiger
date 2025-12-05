@@ -640,10 +640,8 @@ function showWelcomeMessage() {
 }
 
 // Get deployment info
-// This timestamp should be updated on each deployment
-// Format: YYYY-MM-DDTHH:MM:SS (use the time of your most recent deployment)
-// Note: This is manually updated - consider using a build script to auto-update on deploy
-const DEPLOYMENT_TIMESTAMP = new Date('2025-12-05T18:26:09-05:00'); // Last commit: 2025-12-05 18:26:09 -0500
+// This timestamp is automatically updated on each commit via git pre-commit hook
+const DEPLOYMENT_TIMESTAMP = new Date('2025-12-05T18:26:09-05:00'); // Auto-updated on commit
 
 function updateDeploymentInfo() {
     const deploymentInfo = document.getElementById('deploymentInfo');
