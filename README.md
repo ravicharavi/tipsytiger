@@ -46,7 +46,15 @@ A fun and colorful web app to help you track your personal health goals. Track a
 
 ### Database Setup
 
-Run the SQL in `supabase-setup.sql` in your Supabase SQL Editor to create the necessary tables and policies.
+**IMPORTANT:** Before using the app, you must set up the database:
+
+1. Go to your [Supabase Dashboard](https://supabase.com/dashboard)
+2. Select your project
+3. Open **SQL Editor**
+4. Copy and paste the contents of `supabase-setup.sql`
+5. Click **Run**
+
+See `SETUP.md` for detailed instructions.
 
 ## Live Demo
 

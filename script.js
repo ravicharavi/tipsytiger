@@ -128,17 +128,14 @@ async function saveEntry(dateKey, data) {
     }
 }
 
-// Check authentication status
+// Check authentication status (optional)
 async function checkAuth() {
     if (supabase) {
         const { data: { session } } = await supabase.auth.getSession();
         if (session) {
             currentUser = session.user;
             await loadData();
-            showUserSection();
-            renderCalendar();
-        } else {
-            showAuthSection();
+            showUserInfo();
         }
         
         // Listen for auth changes
@@ -146,49 +143,39 @@ async function checkAuth() {
             if (session) {
                 currentUser = session.user;
                 loadData().then(() => {
-                    showUserSection();
+                    showUserInfo();
                     renderCalendar();
                 });
             } else {
                 currentUser = null;
-                trackingData = {};
-                showAuthSection();
+                // Don't clear data, just update UI
+                document.getElementById('userInfo').style.display = 'none';
+                document.getElementById('authToggleBtn').style.display = 'block';
             }
         });
-    } else {
-        // No Supabase, use localStorage
-        loadData();
-        showNameSection();
     }
-}
-
-function showAuthSection() {
-    document.getElementById('authSection').style.display = 'block';
-    document.getElementById('nameSection').style.display = 'none';
-    document.getElementById('welcomeMessage').style.display = 'none';
-    document.getElementById('userSection').style.display = 'none';
-}
-
-function showNameSection() {
-    document.getElementById('authSection').style.display = 'none';
-    document.getElementById('nameSection').style.display = 'flex';
-    document.getElementById('welcomeMessage').style.display = 'none';
-    document.getElementById('userSection').style.display = 'none';
-}
-
-function showUserSection() {
-    document.getElementById('authSection').style.display = 'none';
-    document.getElementById('nameSection').style.display = 'none';
-    document.getElementById('welcomeMessage').style.display = 'none';
-    document.getElementById('userSection').style.display = 'block';
-    if (currentUser) {
-        document.getElementById('userEmail').textContent = currentUser.email;
-        userName = currentUser.email.split('@')[0];
+    
+    // Always load data and show name section
+    loadData();
+    if (userName) {
         showWelcomeMessage();
     }
 }
 
-// Initialize auth check
+function showUserInfo() {
+    if (currentUser) {
+        document.getElementById('userEmail').textContent = currentUser.email;
+        document.getElementById('userInfo').style.display = 'flex';
+        document.getElementById('authToggleBtn').style.display = 'none';
+        // Use email username if no name set
+        if (!userName) {
+            userName = currentUser.email.split('@')[0];
+            showWelcomeMessage();
+        }
+    }
+}
+
+// Initialize auth check (non-blocking)
 checkAuth();
 
 // Get month and year string
