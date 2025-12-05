@@ -225,18 +225,6 @@ header {
     box-shadow: 0 4px 12px rgba(66, 133, 244, 0.2);
 }
 
-.btn-github {
-    background: #24292e;
-    color: white;
-    border-color: #24292e;
-}
-
-.btn-github:hover {
-    background: #2f363d;
-    border-color: #2f363d;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(36, 41, 46, 0.3);
-}
 
 .divider {
     display: flex;
@@ -591,6 +579,9 @@ header {
     font-family: inherit;
     transition: all 0.3s ease;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .btn:hover {
