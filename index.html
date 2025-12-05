@@ -7,20 +7,8 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <title>Tipsy Tiger 🐅</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
-    <!-- Auth Section - Top Right Corner -->
-    <div class="auth-header">
-        <div id="authButtons" class="auth-buttons">
-            <button class="auth-toggle-btn" id="authToggleBtn">Sign In / Sign Up</button>
-        </div>
-        <div id="userInfo" class="user-info" style="display: none;">
-            <span id="userEmail"></span>
-            <button class="auth-toggle-btn" id="signOutBtn">Sign Out</button>
-        </div>
-    </div>
-
     <div class="container">
         <header>
             <h1 class="title">tipsy tiger 🐅</h1>
@@ -89,21 +77,6 @@
                 <button class="btn btn-save" id="saveDrinks">Save</button>
                 <button class="btn btn-cancel" id="cancelDrinks">Cancel</button>
             </div>
-        </div>
-    </div>
-
-    <!-- Auth Modal -->
-    <div class="modal" id="authModal">
-        <div class="modal-content">
-            <h3>Sign In / Sign Up</h3>
-            <div class="sso-section">
-                <div class="sso-buttons">
-                    <button class="btn btn-google" id="googleSignIn">
-                        <span>Sign in with Google</span>
-                    </button>
-                </div>
-            </div>
-            <p class="cancel-link" id="closeAuthBtn">Cancel</p>
         </div>
     </div>
 

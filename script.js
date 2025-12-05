@@ -1,16 +1,3 @@
-// Supabase Configuration
-// Replace these with your Supabase project credentials
-const SUPABASE_URL = 'YOUR_SUPABASE_URL';
-const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
-
-// Initialize Supabase client (only if credentials are provided)
-let supabase = null;
-let currentUser = null;
-
-if (SUPABASE_URL && SUPABASE_ANON_KEY && SUPABASE_URL !== 'YOUR_SUPABASE_URL') {
-    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-}
-
 // Calendar state
 let currentDate = new Date();
 let trackingData = {};
@@ -19,9 +6,8 @@ let rangeStart = null;
 let rangeEnd = null;
 let userName = '';
 
-// Load saved data from localStorage or Supabase
-async function loadData() {
-    // Always load from localStorage first (for offline support)
+// Load saved data from localStorage
+function loadData() {
     const saved = localStorage.getItem('tipsyTigerData');
     if (saved) {
         trackingData = JSON.parse(saved);
@@ -32,159 +18,14 @@ async function loadData() {
         userName = savedName;
         showWelcomeMessage();
     }
-    
-    // If user is logged in and Supabase is configured, sync from Supabase
-    if (supabase && currentUser) {
-        try {
-            const { data, error } = await supabase
-                .from('tracking_entries')
-                .select('*')
-                .eq('user_id', currentUser.id)
-                .order('date', { ascending: true });
-            
-            if (error) throw error;
-            
-            if (data && data.length > 0) {
-                // Merge Supabase data with localStorage
-                const supabaseData = {};
-                data.forEach(entry => {
-                    supabaseData[entry.date] = {
-                        sober: entry.sober,
-                        drinks: entry.drinks,
-                        occasion: entry.occasion || ''
-                    };
-                });
-                
-                // Merge: Supabase takes precedence, but keep any local-only entries
-                trackingData = { ...trackingData, ...supabaseData };
-                saveData(); // Save merged data to localStorage
-            }
-        } catch (error) {
-            console.error('Error loading data from Supabase:', error);
-            // Continue with localStorage data
-        }
-    }
 }
 
-// Save data to localStorage and optionally to Supabase
-async function saveData() {
+// Save data to localStorage
+function saveData() {
     localStorage.setItem('tipsyTigerData', JSON.stringify(trackingData));
-    
-    // If user is logged in and Supabase is configured, sync to Supabase
-    if (supabase && currentUser) {
-        try {
-            // Get all entries for this user
-            const { data: existingEntries } = await supabase
-                .from('tracking_entries')
-                .select('date')
-                .eq('user_id', currentUser.id);
-            
-            const existingDates = new Set(existingEntries?.map(e => e.date) || []);
-            
-            // Upsert all entries
-            const entries = Object.keys(trackingData).map(dateKey => ({
-                user_id: currentUser.id,
-                date: dateKey,
-                sober: trackingData[dateKey].sober || false,
-                drinks: trackingData[dateKey].drinks || 0,
-                occasion: trackingData[dateKey].occasion || ''
-            }));
-            
-            if (entries.length > 0) {
-                const { error } = await supabase
-                    .from('tracking_entries')
-                    .upsert(entries, { onConflict: 'user_id,date' });
-                
-                if (error) throw error;
-            }
-        } catch (error) {
-            console.error('Error saving data to Supabase:', error);
-            // Data is still saved to localStorage, so app continues to work
-        }
-    }
-}
-
-// Check authentication status
-async function checkAuth() {
-    if (!supabase) {
-        // Supabase not configured, hide auth UI
-        document.getElementById('authButtons').style.display = 'none';
-        return;
-    }
-    
-    try {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (session) {
-            currentUser = session.user;
-            showUserInfo();
-            // Merge localStorage data on sign-in
-            await loadData();
-            renderCalendar();
-        } else {
-            currentUser = null;
-            showAuthButtons();
-        }
-    } catch (error) {
-        console.error('Error checking auth:', error);
-        showAuthButtons();
-    }
-}
-
-// Show auth buttons
-function showAuthButtons() {
-    document.getElementById('authButtons').style.display = 'flex';
-    document.getElementById('userInfo').style.display = 'none';
-}
-
-// Show user info
-function showUserInfo() {
-    document.getElementById('authButtons').style.display = 'none';
-    document.getElementById('userInfo').style.display = 'flex';
-    document.getElementById('userEmail').textContent = currentUser?.email || 'User';
-}
-
-// Sign in with Google
-async function signInWithGoogle() {
-    if (!supabase) {
-        alert('Supabase is not configured. Please add your Supabase credentials to script.js');
-        return;
-    }
-    
-    try {
-        const { data, error } = await supabase.auth.signInWithOAuth({
-            provider: 'google',
-            options: {
-                redirectTo: window.location.origin
-            }
-        });
-        
-        if (error) throw error;
-    } catch (error) {
-        console.error('Error signing in with Google:', error);
-        alert('Error signing in: ' + error.message);
-    }
-}
-
-// Sign out
-async function signOut() {
-    if (!supabase) return;
-    
-    try {
-        const { error } = await supabase.auth.signOut();
-        if (error) throw error;
-        
-        currentUser = null;
-        showAuthButtons();
-        // Reload data (will use localStorage only)
-        await loadData();
-        renderCalendar();
-    } catch (error) {
-        console.error('Error signing out:', error);
-    }
 }
 
 // Initialize
-checkAuth();
 loadData();
 
 // Get month and year string
@@ -993,57 +834,6 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('saveDrinks').click();
         }
     });
-
-    // Auth event listeners
-    const authToggleBtn = document.getElementById('authToggleBtn');
-    const signOutBtn = document.getElementById('signOutBtn');
-    const googleSignIn = document.getElementById('googleSignIn');
-    const closeAuthBtn = document.getElementById('closeAuthBtn');
-    const authModal = document.getElementById('authModal');
-
-    if (authToggleBtn) {
-        authToggleBtn.addEventListener('click', () => {
-            authModal.classList.add('show');
-        });
-    }
-
-    if (signOutBtn) {
-        signOutBtn.addEventListener('click', signOut);
-    }
-
-    if (googleSignIn) {
-        googleSignIn.addEventListener('click', signInWithGoogle);
-    }
-
-    if (closeAuthBtn) {
-        closeAuthBtn.addEventListener('click', () => {
-            authModal.classList.remove('show');
-        });
-    }
-
-    // Close auth modal when clicking outside
-    if (authModal) {
-        authModal.addEventListener('click', (e) => {
-            if (e.target.id === 'authModal') {
-                authModal.classList.remove('show');
-            }
-        });
-    }
-
-    // Listen for auth state changes
-    if (supabase) {
-        supabase.auth.onAuthStateChange((event, session) => {
-            if (event === 'SIGNED_IN') {
-                currentUser = session.user;
-                showUserInfo();
-                loadData().then(() => renderCalendar());
-            } else if (event === 'SIGNED_OUT') {
-                currentUser = null;
-                showAuthButtons();
-                loadData().then(() => renderCalendar());
-            }
-        });
-    }
 
     // Initial render
     updateViewButtons();
