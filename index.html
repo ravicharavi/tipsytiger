@@ -30,6 +30,24 @@
         <div class="modal" id="authModal">
             <div class="modal-content">
                 <h3>Sign In / Sign Up</h3>
+                
+                <!-- SSO Options -->
+                <div class="sso-section">
+                    <p class="sso-label">Quick sign in with:</p>
+                    <div class="sso-buttons">
+                        <button class="btn btn-sso btn-google" id="googleSignIn">
+                            <span>🔵</span> Google
+                        </button>
+                        <button class="btn btn-sso btn-github" id="githubSignIn">
+                            <span>⚫</span> GitHub
+                        </button>
+                    </div>
+                    <div class="divider">
+                        <span>or</span>
+                    </div>
+                </div>
+                
+                <!-- Email/Password Form -->
                 <input type="email" id="emailInput" placeholder="Email" class="auth-input">
                 <input type="password" id="passwordInput" placeholder="Password" class="auth-input">
                 <div class="modal-buttons">

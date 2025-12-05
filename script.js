@@ -136,15 +136,45 @@ async function checkAuth() {
             currentUser = session.user;
             await loadData();
             showUserInfo();
+            
+            // Sync localStorage data if user just signed in via OAuth
+            const localData = localStorage.getItem('tipsyTigerData');
+            if (localData) {
+                const localTrackingData = JSON.parse(localData);
+                if (Object.keys(localTrackingData).length > 0) {
+                    // Merge local data with Supabase data
+                    Object.keys(localTrackingData).forEach(dateKey => {
+                        if (!trackingData[dateKey]) {
+                            trackingData[dateKey] = localTrackingData[dateKey];
+                        }
+                    });
+                    // Save merged data to Supabase
+                    await saveData();
+                }
+            }
         }
         
         // Listen for auth changes
         supabase.auth.onAuthStateChange((_event, session) => {
             if (session) {
                 currentUser = session.user;
-                loadData().then(() => {
+                loadData().then(async () => {
                     showUserInfo();
                     renderCalendar();
+                    
+                    // Sync localStorage data on OAuth sign in
+                    const localData = localStorage.getItem('tipsyTigerData');
+                    if (localData) {
+                        const localTrackingData = JSON.parse(localData);
+                        if (Object.keys(localTrackingData).length > 0) {
+                            Object.keys(localTrackingData).forEach(dateKey => {
+                                if (!trackingData[dateKey]) {
+                                    trackingData[dateKey] = localTrackingData[dateKey];
+                                }
+                            });
+                            await saveData();
+                        }
+                    }
                 });
             } else {
                 currentUser = null;
@@ -952,6 +982,39 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('passwordInput').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 document.getElementById('signInBtn').click();
+            }
+        });
+        
+        // SSO Sign In
+        document.getElementById('googleSignIn').addEventListener('click', async () => {
+            const errorEl = document.getElementById('authError');
+            errorEl.textContent = 'Redirecting to Google...';
+            
+            const { data, error } = await supabase.auth.signInWithOAuth({
+                provider: 'google',
+                options: {
+                    redirectTo: window.location.origin + window.location.pathname
+                }
+            });
+            
+            if (error) {
+                errorEl.textContent = error.message;
+            }
+        });
+        
+        document.getElementById('githubSignIn').addEventListener('click', async () => {
+            const errorEl = document.getElementById('authError');
+            errorEl.textContent = 'Redirecting to GitHub...';
+            
+            const { data, error } = await supabase.auth.signInWithOAuth({
+                provider: 'github',
+                options: {
+                    redirectTo: window.location.origin + window.location.pathname
+                }
+            });
+            
+            if (error) {
+                errorEl.textContent = error.message;
             }
         });
     }
