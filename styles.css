@@ -17,6 +17,84 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
+/* Auth Header - Top Right Corner */
+.auth-header {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.auth-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.auth-toggle-btn {
+    padding: 10px 20px;
+    font-size: 0.9em;
+    border: 2px solid rgba(255, 107, 53, 0.3);
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 600;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    background: white;
+    color: #FF6B35;
+    min-height: 44px;
+    touch-action: manipulation;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.auth-toggle-btn:hover {
+    background: #FF6B35;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: white;
+    padding: 10px 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 2px solid rgba(255, 107, 53, 0.2);
+}
+
+.user-info span {
+    font-size: 0.9em;
+    color: #333;
+    font-weight: 500;
+}
+
+@media (max-width: 480px) {
+    .auth-header {
+        top: 10px;
+        right: 10px;
+    }
+    
+    .auth-toggle-btn {
+        padding: 8px 16px;
+        font-size: 0.85em;
+    }
+    
+    .user-info {
+        flex-direction: column;
+        gap: 10px;
+        padding: 10px 15px;
+    }
+    
+    .user-info span {
+        font-size: 0.8em;
+    }
+}
+
 @media (max-width: 480px) {
     body {
         padding: 10px;
@@ -278,6 +356,20 @@ header {
     border-color: #1a73e8;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(66, 133, 244, 0.2);
+}
+
+.cancel-link {
+    text-align: center;
+    margin-top: 15px;
+    color: #666;
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: color 0.3s ease;
+}
+
+.cancel-link:hover {
+    color: #FF6B35;
 }
 
 
