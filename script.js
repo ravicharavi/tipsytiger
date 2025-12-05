@@ -851,8 +851,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     
-    // Show welcome if name already exists (non-auth mode)
-    if (userName && !currentUser) {
+    // Show welcome if name already exists
+    if (userName) {
         showWelcomeMessage();
     }
     
