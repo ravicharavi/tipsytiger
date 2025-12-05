@@ -641,7 +641,7 @@ function showWelcomeMessage() {
 
 // Get deployment info
 // This timestamp is automatically updated on each commit via git pre-commit hook
-const DEPLOYMENT_TIMESTAMP = new Date('2025-12-05T18:26:09-05:00'); // Auto-updated on commit
+const DEPLOYMENT_TIMESTAMP = new Date('2025-12-05T18:30:52-05:00'); // Auto-updated on commit
 
 function updateDeploymentInfo() {
     const deploymentInfo = document.getElementById('deploymentInfo');
