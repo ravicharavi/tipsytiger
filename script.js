@@ -236,7 +236,7 @@ function renderDateRangeView() {
     if (!rangeStart || !rangeEnd) {
         const grid = document.getElementById('calendarGrid');
         grid.className = 'calendar-grid';
-        grid.innerHTML = '<div style="text-align: center; padding: 40px; color: #666;">Select a date range above to view your progress</div>';
+        grid.innerHTML = '';
         return;
     }
     
