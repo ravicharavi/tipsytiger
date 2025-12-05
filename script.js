@@ -662,8 +662,7 @@ function updateDeploymentInfo() {
 document.addEventListener('DOMContentLoaded', () => {
     updateDeploymentInfo();
     
-    // Auth handlers (optional)
-    if (supabase) {
+    // Name input handler
         // Toggle auth modal
         document.getElementById('authToggleBtn').addEventListener('click', () => {
             const modal = document.getElementById('authModal');
