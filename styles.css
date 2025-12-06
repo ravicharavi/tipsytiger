@@ -109,7 +109,11 @@ header {
     .btn-go {
         padding: 12px 24px;
         font-size: 16px; /* Prevents zoom on iOS */
-        width: auto;
+        width: auto !important;
+    }
+    
+    .date-range-selector .btn-save {
+        width: auto !important;
     }
 }
 
@@ -283,6 +287,10 @@ header {
     padding: 20px;
     background: rgba(255, 107, 53, 0.05);
     border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
 }
 
 .date-range-instruction {
@@ -620,7 +628,7 @@ header {
 .btn-go {
     padding: 12px 24px;
     font-size: 1em;
-    width: auto;
+    width: auto !important;
     min-width: auto;
     border-radius: 12px;
     background: linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%);
@@ -633,6 +641,13 @@ header {
 .btn-go:hover {
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(255, 107, 53, 0.4);
+}
+
+/* Apply button in date range selector - make it fit text and centered */
+.date-range-selector .btn-save {
+    width: auto !important;
+    margin: 10px auto 0 auto;
+    display: inline-block;
 }
 
 .btn-save {
